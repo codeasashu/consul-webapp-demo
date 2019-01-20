@@ -1,0 +1,14 @@
+<?php 
+{{range $index, $element := service "db"}}
+  {{if eq $index 0}}
+    $hostname = '{{.Address}}';
+    $port = {{.Port}};
+  {{end}}
+{{else}}
+    $hostname = 'localhost';
+    $port = 3306;
+{{end}}
+    $dbname = 'example';
+    $user = 'root';
+    $pass = 'root';
+?>

@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+    app:
+        image: nginx:latest
+        volumes:
+            - ./app:/var/www/html
+            - ./conf:/etc/nginx/conf.d/
+        ports:
+            - 8080:80
+        depends_on:
+            - phpfpm
+    phpfpm:
+        build:
+            context: .
+            dockerfile: Dockerfile
+            #        image: php:fpm-alpine
+        environment:
+            - CONSUL_URL=192.168.1.101:8500
+        volumes:
+            - ./app:/var/www/html
+            - ./templates:/templates
+        ports:
+            - 9000:9000
+        entrypoint: ["sh", "/tmp/start.sh"]
