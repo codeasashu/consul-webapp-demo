@@ -1,1 +1,3 @@
 tags
+.env
+app/db.php

@@ -9,6 +9,6 @@
     $port = 3306;
 {{end}}
     $dbname = 'example';
-    $user = 'root';
-    $pass = 'root';
+    $user = '{{ key "sync_server/db_user" }}';
+    $pass = '{{ key "sync_server/db_pass" }}';
 ?>

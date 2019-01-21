@@ -10,16 +10,25 @@ services:
             - 8080:80
         depends_on:
             - phpfpm
+
     phpfpm:
         build:
             context: .
             dockerfile: Dockerfile
-            #        image: php:fpm-alpine
         environment:
-            - CONSUL_URL=192.168.1.101:8500
+            - CONSUL_URL=${CONSUL_URL}
         volumes:
             - ./app:/var/www/html
             - ./templates:/templates
         ports:
             - 9000:9000
-        entrypoint: ["sh", "/tmp/start.sh"]
+
+    consul-template:
+        image: hashicorp/consul-template:alpine
+        container_name: "consul-template"
+        volumes:
+         - "./consul:/data"
+         - "./app:/app"
+        environment:
+            - CONSUL_URL=${CONSUL_URL}
+        command: consul-template -config /data/template.hcl -consul-addr ${CONSUL_URL}
